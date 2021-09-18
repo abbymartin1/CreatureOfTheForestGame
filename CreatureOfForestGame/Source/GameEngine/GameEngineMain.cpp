@@ -9,7 +9,6 @@
 #include "Util/AnimationManager.h"
 #include "Util/ButtonManager.h"
 #include "Util/CameraManager.h"
-#include "GameEngine/EntitySystem/Components/RenderComponent.h"
 
 using namespace GameEngine;
 

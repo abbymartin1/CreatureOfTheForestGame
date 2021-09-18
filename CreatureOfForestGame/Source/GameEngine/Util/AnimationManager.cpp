@@ -16,27 +16,26 @@ AnimationManager::~AnimationManager()
 
 }
 
-
 void AnimationManager::InitStaticGameAnimations()
 {
 	m_animDefinitions.push_back
 	(
 		SAnimationDefinition(
-			EAnimationId::BirdIdle,
+			EAnimationId::MonkeyMoveLeft,
 			eTexture::Player,
 			sf::Vector2i(0, 0),
-			10,
+			4,
 			3)
 	);
 
 	m_animDefinitions.push_back
 	(
 		SAnimationDefinition(
-			EAnimationId::BirdFly,
+			EAnimationId::MonkeyPickUpObject,
 			eTexture::Player,
 			sf::Vector2i(0, 1),
-			10,
-			15)
+			4,
+			3)
 	);
 }
 

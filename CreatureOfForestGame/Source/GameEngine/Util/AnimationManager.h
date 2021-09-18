@@ -11,9 +11,8 @@ namespace GameEngine
 	{
 		enum type
 		{
-			BirdIdle,
-			BirdFly,
-			Smoke,
+			MonkeyMoveLeft,
+			MonkeyPickUpObject,
 			None,
 		};
 	}
