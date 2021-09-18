@@ -19,7 +19,11 @@ namespace Game
 		bool IsGameOver() { return false; }
 	private:
 		void CreatePlayer();
+		void CreateKillerPlant();
+		void CreateBackground();
+		void CreatePlatforms();
 		GameEngine::Entity* m_player;
+		GameEngine::Entity* m_killerPlant;
 	};
 }
 

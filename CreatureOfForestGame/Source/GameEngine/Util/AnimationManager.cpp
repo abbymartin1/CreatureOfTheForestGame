@@ -37,8 +37,17 @@ void AnimationManager::InitStaticGameAnimations()
 			4,
 			3)
 	);
-}
 
+	m_animDefinitions.push_back
+	(
+		SAnimationDefinition(
+			EAnimationId::KillerPlantMove,
+			eTexture::KillerPlant,
+			sf::Vector2i(0, 2),
+			2,
+			3)
+	);
+}
 
 void AnimationManager::ReleaseStaticGameAnimations()
 {
