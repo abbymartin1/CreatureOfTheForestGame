@@ -1,11 +1,14 @@
 #include "PlayerMovementComponent.h"
-
 #include "GameEngine/GameEngineMain.h"
+
+#include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
+
 #include <SFML/Window/Keyboard.hpp>
 
 using namespace Game;
 
 PlayerMovementComponent::PlayerMovementComponent()
+    : m_lastPlayerSpriteIndex(0)
 {
 
 }
@@ -20,29 +23,57 @@ void PlayerMovementComponent::OnAddToWorld()
     Component::OnAddToWorld();
 }
 
-
 void PlayerMovementComponent::Update()
 {
     Component::Update();
 
-    // get amount of time that passed since last update() call 
-    float dt = GameEngine::GameEngineMain::GetTimeDelta();
+    // grab the time that has passed since the last Update() call 
+	float dt = GameEngine::GameEngineMain::GetTimeDelta();
 
-    // by default the wanted velocity is 0
-    sf::Vector2f wantedVelocity = sf::Vector2f(0.f, 0.f);
+    // Pixels/s
+	static float playerVel = 100.f; 
 
-    //player velocity is applied when we have some input (for the time being we will make it 10 pixels/sec)
-    float playerVelocity = 100.f;
+    // Pixels/s
+	sf::Vector2f wantedVel = sf::Vector2f(0.f, 0.f);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        wantedVelocity.x -= playerVelocity * dt;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        wantedVelocity.x += playerVelocity * dt;
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+        // Animation
+        GameEngine::AnimationComponent* animComponent = GetEntity()->GetComponent<GameEngine::AnimationComponent>();
+        if (animComponent)
+        {
+            animComponent->PlayAnim(GameEngine::EAnimationId::MonkeyMoveLeft);
+        }
 
-    // Update the entity position with the new velocity
-    GetEntity()->SetPos(GetEntity()->GetPos() + wantedVelocity);
+        // Movement
+		wantedVel.x -= playerVel * dt;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		wantedVel.x += playerVel * dt;
+	}
+
+    // int numAnimationFrames = 4;
+    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+    // {
+    //      m_lastPlayerSpriteIndex++;
+
+    //      if (m_lastPlayerSpriteIndex >= numAnimationFrames)
+    //          m_lastPlayerSpriteIndex = 0;
+        
+    //     // GameEngine::SpriteRenderComponent* spriteRender = GetEntity()->GetComponent<GameEngine::SpriteRenderComponent>();
+    //     // if (spriteRender)
+    //     //  {
+    //     //      spriteRender->SetTileIndex(sf::Vector2i(m_lastPlayerSpriteIndex, 0));
+    //     //  }
+
+    //     GameEngine::AnimationComponent* animComponent = GetEntity()->GetComponent<GameEngine::AnimationComponent>();
+    //     if (animComponent)
+    //     {
+    //         animComponent->PlayAnim(GameEngine::EAnimationId::MonkeyMoveLeft);
+    //     }
+    // }
+
+    // update the entity with the new velocity
+    GetEntity()->SetPos(GetEntity()->GetPos() + wantedVel);
 }

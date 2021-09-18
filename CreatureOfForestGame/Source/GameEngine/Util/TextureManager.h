@@ -11,7 +11,7 @@ namespace GameEngine
 		enum type
 		{
 			None = -1,
-			Player,
+			Player = 0,
 			BG,
 			Count,
 		};
@@ -21,7 +21,7 @@ namespace GameEngine
 	{
 		switch (texture)
 		{
-		case eTexture::Player:    return "player.png";
+		case eTexture::Player:    return "monkey_runs_left.png";
 		case eTexture::BG:		  return "bg.png";
 		default:       return "UnknownTexType";
 		}
@@ -48,9 +48,6 @@ namespace GameEngine
 
 namespace TextureHelper
 {
-	sf::Vector2f GetTextureTileSize(GameEngine::eTexture::type texture)
-	{
-		return sf::Vector2f(-1.f, -1.f);
-	}
+	sf::Vector2f GetTextureTileSize(GameEngine::eTexture::type texture);
 }
 
