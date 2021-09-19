@@ -2,13 +2,14 @@
 #include "GameEngine/GameEngineMain.h"
 
 #include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
+#include "GameEngine/EntitySystem/Components/PawnPhysicsComponent.h"
 
 #include <SFML/Window/Keyboard.hpp>
 
 using namespace Game;
 
 PlayerMovementComponent::PlayerMovementComponent()
-    : m_lastPlayerSpriteIndex(0)
+    : m_wasJumpButtonPressed(false)
 {
 
 }
@@ -27,11 +28,9 @@ void PlayerMovementComponent::Update()
 {
     Component::Update();
 
-    // grab the time that has passed since the last Update() call 
-	float dt = GameEngine::GameEngineMain::GetTimeDelta();
-
     // Pixels/s
-	static float playerVel = 100.f; 
+    float playerVelocity = 0.1f;
+    float jumpVelocity = 90.f;
 
     // Pixels/s
 	sf::Vector2f wantedVel = sf::Vector2f(0.f, 0.f);
@@ -46,33 +45,32 @@ void PlayerMovementComponent::Update()
         }
 
         // Movement
-		wantedVel.x -= playerVel * dt;
+		wantedVel.x -= playerVelocity;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		wantedVel.x += playerVel * dt;
+		wantedVel.x += playerVelocity;
 	}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		// This boolean flag makes sure we react to pressing up only once, instead of applying this velocity 
+        // for as long as button is pressed 
+        if (!m_wasJumpButtonPressed)
+        {
+            wantedVel.y -= jumpVelocity;
+            m_wasJumpButtonPressed = true;
+        }
+	}
+    else
+    {
+        m_wasJumpButtonPressed = false;
+    }
 
-    // int numAnimationFrames = 4;
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-    // {
-    //      m_lastPlayerSpriteIndex++;
-
-    //      if (m_lastPlayerSpriteIndex >= numAnimationFrames)
-    //          m_lastPlayerSpriteIndex = 0;
-        
-    //     // GameEngine::SpriteRenderComponent* spriteRender = GetEntity()->GetComponent<GameEngine::SpriteRenderComponent>();
-    //     // if (spriteRender)
-    //     //  {
-    //     //      spriteRender->SetTileIndex(sf::Vector2i(m_lastPlayerSpriteIndex, 0));
-    //     //  }
-
-    //     GameEngine::AnimationComponent* animComponent = GetEntity()->GetComponent<GameEngine::AnimationComponent>();
-    //     if (animComponent)
-    //     {
-    //         animComponent->PlayAnim(GameEngine::EAnimationId::MonkeyMoveLeft);
-    //     }
-    // }
+    GameEngine::PawnPhysicsComponent* pawnPhys = GetEntity()->GetComponent<GameEngine::PawnPhysicsComponent>();
+    if (pawnPhys)
+    {
+        pawnPhys->SetVelocity(wantedVel);
+    }
 
     // update the entity with the new velocity
     GetEntity()->SetPos(GetEntity()->GetPos() + wantedVel);

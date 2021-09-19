@@ -11,8 +11,7 @@ namespace Game
 
         virtual void Update() override;
         virtual void OnAddToWorld() override;
-    
     private:
-        float m_lastPlayerSpriteIndex;
+        bool m_wasJumpButtonPressed;
     };
 }
