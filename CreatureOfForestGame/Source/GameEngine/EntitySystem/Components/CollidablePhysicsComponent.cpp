@@ -8,10 +8,12 @@
 using namespace GameEngine;
 
 CollidablePhysicsComponent::CollidablePhysicsComponent()
+	: m_numOfSeedsInCollision(0)
+	, m_numOfLeavesInCollision(0)
+	, m_numOfHeartsInCollision(0)
 {
 
 }
-
 
 CollidablePhysicsComponent::~CollidablePhysicsComponent()
 {
@@ -64,6 +66,53 @@ void CollidablePhysicsComponent::Update()
 			}
 
 			GetEntity()->SetPos(pos);
+			DidCollideWithEntity(colComponent);
 		}
+	}
+	// reset values
+	m_numOfSeedsInCollision = 0;
+	m_numOfLeavesInCollision = 0;
+	m_numOfHeartsInCollision = 0;
+}
+
+void CollidablePhysicsComponent::DidCollideWithEntity(CollidableComponent* collidable)
+{
+	// we want to see which components collided together to determine if we make something new. 
+	// 2 seed blocks = 1 leaf block 
+	// 2 leaf blocks = 1 heart 
+	// 1 heart -> helps to save the orangutangs habitat
+	std::string entityTag = collidable->GetEntity()->GetEntityTag();
+	if (entityTag == "seed")
+	{
+		m_numOfSeedsInCollision++;
+	} 
+	else if (entityTag == "leaf")
+	{
+		m_numOfLeavesInCollision++;
+	} 
+	else if (entityTag == "heart")
+	{
+		m_numOfHeartsInCollision++;
+	}
+
+	if (m_numOfSeedsInCollision > 0)
+	{
+		// destroy
+		//collidable->GetEntity()->SetLocalPosOffset(sf::Vector2f(1000.f, 1000.f));
+		collidable->GetEntity()->SetSize(sf::Vector2f(50.f, 50.f));
+		// destroy the seeds 
+		//spawn new leaf
+	}
+	if (m_numOfLeavesInCollision > 0)
+	{
+		delete collidable->GetEntity();
+		// destroy the leaves 
+		// spawn new heart
+	}
+	if (m_numOfHeartsInCollision > 0)
+	{
+		delete collidable->GetEntity();
+		// destroy the heart
+		// remove some time from the global timer
 	}
 }

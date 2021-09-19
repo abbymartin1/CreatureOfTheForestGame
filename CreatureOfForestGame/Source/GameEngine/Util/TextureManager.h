@@ -28,7 +28,7 @@ namespace GameEngine
 	{
 		switch (texture)
 		{
-		case eTexture::Player:    return "monkey_runs_left.png";
+		case eTexture::Player:    return "monkey_runs.png";
 		case eTexture::BG:		  return "bg2.png";
 		case eTexture::KillerPlant: return "killer_plants.png";
 		case eTexture::JunglePlatform: return "jungle_platform.png";

@@ -30,7 +30,7 @@ void PlayerMovementComponent::Update()
 
     // Pixels/s
     float playerVelocity = 0.1f;
-    float jumpVelocity = 90.f;
+    float jumpVelocity = 50.f;
 
     // Pixels/s
 	sf::Vector2f wantedVel = sf::Vector2f(0.f, 0.f);
@@ -49,9 +49,15 @@ void PlayerMovementComponent::Update()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
+        // Animation
+        GameEngine::AnimationComponent* animComponent = GetEntity()->GetComponent<GameEngine::AnimationComponent>();
+        if (animComponent)
+        {
+            animComponent->PlayAnim(GameEngine::EAnimationId::MonkeyMoveRight);
+        }
 		wantedVel.x += playerVelocity;
 	}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		// This boolean flag makes sure we react to pressing up only once, instead of applying this velocity 
         // for as long as button is pressed 

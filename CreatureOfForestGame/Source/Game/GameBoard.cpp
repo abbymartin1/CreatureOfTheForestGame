@@ -6,7 +6,9 @@
 #include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
 #include "GameEngine/EntitySystem/Components/AnimationComponent.h"
 #include "GameEngine/EntitySystem/Components/CollidablePhysicsComponent.h"
+#include "GameEngine/EntitySystem/Components/CollidableComponent.h"
 #include "GameEngine/EntitySystem/Components/PawnPhysicsComponent.h"
+#include "GameEngine/EntitySystem/Components/PhysicsComponentBlock.h"
 #include "Game/GameComponents/PlayerCameraComponent.h"
 
 using namespace Game;
@@ -14,13 +16,13 @@ using namespace Game;
 GameBoard::GameBoard()
 	: m_player(nullptr)
 	, m_killerPlant(nullptr)
+	, m_lastObstacleSpawnTimer(0.f)
 {
 	CreatePlayer();
 	//CreateKillerPlant();
 	CreateBackground();
 	CreatePlatforms();
 }
-
 
 GameBoard::~GameBoard()
 {
@@ -46,9 +48,8 @@ void GameBoard::CreatePlayer()
 	m_player->AddComponent<GameEngine::AnimationComponent>();
 
 	// Collision
+	m_player->SetEntityTag("player");
 	m_player->AddComponent<GameEngine::PawnPhysicsComponent>();
-
-	//m_player->AddComponent<PlayerCameraComponent>();
 }
 
 void GameBoard::CreateKillerPlant()
@@ -56,7 +57,6 @@ void GameBoard::CreateKillerPlant()
 	m_killerPlant = new GameEngine::Entity();
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(m_killerPlant);
 
-	//120.f, 280.f
 	m_killerPlant->SetPos(sf::Vector2f(120.f, 300.f));
 	m_killerPlant->SetSize(sf::Vector2f(100.f, 100.f));
 
@@ -157,7 +157,120 @@ void GameBoard::CreatePlatforms()
 	platform5->AddComponent<GameEngine::CollidablePhysicsComponent>();
 }
 
+void GameBoard::SpawnRandomSeedBlock()
+{
+	static float minNextSpawnTime = 2.f;
+	static float maxNextSpawnTime = 4.f;
+
+	static float minObstacleXPos = 100.f;
+	static float maxObstacleXPos = 450.f;
+	static float minObstacleYPos = 20.f;
+	static float maxObstacleYPos = 30.f;
+
+	sf::Vector2f pos = sf::Vector2f(RandomFloatRange(minObstacleXPos, maxObstacleXPos), RandomFloatRange(minObstacleYPos, maxObstacleYPos));
+
+	CreateRandomSeedBlocks(pos);
+
+	m_lastObstacleSpawnTimer = RandomFloatRange(minNextSpawnTime, maxNextSpawnTime);
+}
+
+void GameBoard::SpawnRandomLeafBlock()
+{
+	static float minNextSpawnTime = 1.f;
+	static float maxNextSpawnTime = 3.f;
+
+	static float minObstacleXPos = 100.f;
+	static float maxObstacleXPos = 450.f;
+	static float minObstacleYPos = 20.f;
+	static float maxObstacleYPos = 30.f;
+
+	sf::Vector2f pos = sf::Vector2f(RandomFloatRange(minObstacleXPos, maxObstacleXPos), RandomFloatRange(minObstacleYPos, maxObstacleYPos));
+
+	CreateRandomLeafBlocks(pos);
+
+	m_lastObstacleSpawnTimer = RandomFloatRange(minNextSpawnTime, maxNextSpawnTime);
+}
+
+void GameBoard::SpawnRandomHeartBlock()
+{
+	static float minNextSpawnTime = 1.f;
+	static float maxNextSpawnTime = 3.f;
+
+	static float minObstacleXPos = 100.f;
+	static float maxObstacleXPos = 450.f;
+	static float minObstacleYPos = 20.f;
+	static float maxObstacleYPos = 30.f;
+
+	sf::Vector2f pos = sf::Vector2f(RandomFloatRange(minObstacleXPos, maxObstacleXPos), RandomFloatRange(minObstacleYPos, maxObstacleYPos));
+
+	CreateRandomHearts(pos);
+
+	m_lastObstacleSpawnTimer = RandomFloatRange(minNextSpawnTime, maxNextSpawnTime);
+}
+
+void GameBoard::CreateRandomSeedBlocks(const sf::Vector2f& pos)
+{
+	GameEngine::Entity* seedBlock = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(seedBlock);
+
+	seedBlock->SetPos(sf::Vector2f(pos.x, pos.y));
+	seedBlock->SetSize(sf::Vector2f(20.f, 20.f));
+
+	// Render
+	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(seedBlock->AddComponent<GameEngine::SpriteRenderComponent>());
+
+	render->SetFillColor(sf::Color::Transparent);
+	render->SetTexture(GameEngine::eTexture::Seed);
+
+	// Collision
+	seedBlock->SetEntityTag("seed");
+	seedBlock->AddComponent<GameEngine::PhysicsComponentBlock>();
+}
+
+void GameBoard::CreateRandomLeafBlocks(const sf::Vector2f& pos)
+{
+	GameEngine::Entity* leafBlock = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(leafBlock);
+
+	leafBlock->SetPos(sf::Vector2f(pos.x, pos.y));
+	leafBlock->SetSize(sf::Vector2f(30.f, 30.f));
+
+	// Render
+	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(leafBlock->AddComponent<GameEngine::SpriteRenderComponent>());
+
+	render->SetFillColor(sf::Color::Transparent);
+	render->SetTexture(GameEngine::eTexture::Leaf);
+
+	// Collision
+	leafBlock->SetEntityTag("leaf");
+	leafBlock->AddComponent<GameEngine::PhysicsComponentBlock>();
+}
+
+void GameBoard::CreateRandomHearts(const sf::Vector2f& pos)
+{
+	GameEngine::Entity* heart = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(heart);
+
+	heart->SetPos(sf::Vector2f(pos.x, pos.y));
+	heart->SetSize(sf::Vector2f(20.f, 20.f));
+
+	// Render
+	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(heart->AddComponent<GameEngine::SpriteRenderComponent>());
+
+	render->SetFillColor(sf::Color::Transparent);
+	render->SetTexture(GameEngine::eTexture::Heart);
+
+	// Collision
+	heart->SetEntityTag("heart");
+	heart->AddComponent<GameEngine::PhysicsComponentBlock>();
+}
+
 void GameBoard::Update()
 {	
-	
+	float dt = GameEngine::GameEngineMain::GetInstance()->GetTimeDelta();
+	m_lastObstacleSpawnTimer -= dt;
+	if (m_lastObstacleSpawnTimer <= 0.f)
+	{
+		SpawnRandomSeedBlock();
+	}
 }
