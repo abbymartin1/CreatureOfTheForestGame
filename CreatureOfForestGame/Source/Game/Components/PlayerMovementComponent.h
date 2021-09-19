@@ -1,5 +1,6 @@
-//#pragma once
+#pragma once
 #include "GameEngine/EntitySystem/Component.h"
+#include "GameEngine/EntitySystem/Components/AnimationComponent.h"
 
 namespace Game
 {
@@ -13,5 +14,11 @@ namespace Game
         virtual void OnAddToWorld() override;
     private:
         bool m_wasJumpButtonPressed;
+        bool m_wasLeafButtonPressed;
+        bool m_wasHeartButtonPressed;
+        float m_moveLeftTimerDt;
+        float m_moveRightTimerDt;
+        float m_moveTimerMaxTime;
+        GameEngine::AnimationComponent* m_animComponent;
     };
 }

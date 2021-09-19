@@ -13,6 +13,7 @@ namespace GameEngine
 			None = -1,
 			Player = 0,
 			BG,
+			BGGameOver,
 			KillerPlant,
 			Platform, 
 			JunglePlatform,
@@ -28,16 +29,17 @@ namespace GameEngine
 	{
 		switch (texture)
 		{
-		case eTexture::Player:    return "monkey_runs.png";
-		case eTexture::BG:		  return "bg2.png";
-		case eTexture::KillerPlant: return "killer_plants.png";
-		case eTexture::JunglePlatform: return "jungle_platform.png";
+		case eTexture::Player:    		return "monkey_runs.png";
+		case eTexture::BG:		  		return "bg2.png";
+		case eTexture::BGGameOver:  	return "game_over.png";
+		case eTexture::KillerPlant: 	return "killer_plants.png";
+		case eTexture::JunglePlatform:  return "jungle_platform.png";
 		case eTexture::JunglePlatform2: return "jungle_platform_2.png";
-		case eTexture::Platform: return "platform.png";
-		case eTexture::Seed: return "seed_block.png";
-		case eTexture::Leaf: return "leaf_block.png";
-		case eTexture::Heart: return "heart.png";
-		default:       return "UnknownTexType";
+		case eTexture::Platform: 		return "platform.png";
+		case eTexture::Seed: 			return "seed_block.png";
+		case eTexture::Leaf: 			return "leaf_block.png";
+		case eTexture::Heart: 			return "heart.png";
+		default:       					return "UnknownTexType";
 		}
 	}
 

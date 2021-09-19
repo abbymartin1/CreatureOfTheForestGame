@@ -11,11 +11,16 @@
 #include "GameEngine/EntitySystem/Components/PhysicsComponentBlock.h"
 #include "Game/GameComponents/PlayerCameraComponent.h"
 
+#include <iostream>
+#include <ctime>
+#include <unistd.h>
+
 using namespace Game;
 
 GameBoard::GameBoard()
 	: m_player(nullptr)
 	, m_killerPlant(nullptr)
+	, m_isGameOver(false)
 	, m_lastObstacleSpawnTimer(0.f)
 {
 	CreatePlayer();
@@ -27,6 +32,16 @@ GameBoard::GameBoard()
 GameBoard::~GameBoard()
 {
 
+}
+
+std::string getCurrentDateTime()
+{
+    time_t tt;
+    struct tm *st;
+
+    time(&tt);
+    st = localtime(&tt);
+    return asctime(st);
 }
 
 void GameBoard::CreatePlayer()
@@ -50,6 +65,9 @@ void GameBoard::CreatePlayer()
 	// Collision
 	m_player->SetEntityTag("player");
 	m_player->AddComponent<GameEngine::PawnPhysicsComponent>();
+
+	// Camera
+	m_player->AddComponent<PlayerCameraComponent>();
 }
 
 void GameBoard::CreateKillerPlant()
@@ -176,9 +194,6 @@ void GameBoard::SpawnRandomSeedBlock()
 
 void GameBoard::SpawnRandomLeafBlock()
 {
-	static float minNextSpawnTime = 1.f;
-	static float maxNextSpawnTime = 3.f;
-
 	static float minObstacleXPos = 100.f;
 	static float maxObstacleXPos = 450.f;
 	static float minObstacleYPos = 20.f;
@@ -187,25 +202,18 @@ void GameBoard::SpawnRandomLeafBlock()
 	sf::Vector2f pos = sf::Vector2f(RandomFloatRange(minObstacleXPos, maxObstacleXPos), RandomFloatRange(minObstacleYPos, maxObstacleYPos));
 
 	CreateRandomLeafBlocks(pos);
-
-	m_lastObstacleSpawnTimer = RandomFloatRange(minNextSpawnTime, maxNextSpawnTime);
 }
 
 void GameBoard::SpawnRandomHeartBlock()
 {
-	static float minNextSpawnTime = 1.f;
-	static float maxNextSpawnTime = 3.f;
-
 	static float minObstacleXPos = 100.f;
-	static float maxObstacleXPos = 450.f;
+	static float maxObstacleXPos = 200.f;
 	static float minObstacleYPos = 20.f;
 	static float maxObstacleYPos = 30.f;
 
 	sf::Vector2f pos = sf::Vector2f(RandomFloatRange(minObstacleXPos, maxObstacleXPos), RandomFloatRange(minObstacleYPos, maxObstacleYPos));
 
 	CreateRandomHearts(pos);
-
-	m_lastObstacleSpawnTimer = RandomFloatRange(minNextSpawnTime, maxNextSpawnTime);
 }
 
 void GameBoard::CreateRandomSeedBlocks(const sf::Vector2f& pos)
@@ -273,4 +281,25 @@ void GameBoard::Update()
 	{
 		SpawnRandomSeedBlock();
 	}
+
+	if (m_isGameOver)
+	{
+		GameOver();
+	}
+}
+
+void GameBoard::GameOver()
+{
+	GameEngine::Entity* backgroundGameOver = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(backgroundGameOver);
+
+	backgroundGameOver->SetPos(sf::Vector2f(250.f, 250.f));
+	backgroundGameOver->SetSize(sf::Vector2f(500.f, 500.f));
+
+	// Render
+	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(backgroundGameOver->AddComponent<GameEngine::SpriteRenderComponent>());
+
+	render->SetFillColor(sf::Color::Transparent);
+	render->SetTexture(GameEngine::eTexture::BGGameOver);
+	render->SetZLevel(4);
 }

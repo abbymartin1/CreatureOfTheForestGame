@@ -37,6 +37,16 @@ namespace GameEngine
 
         void OnInitialised();
         bool IsGameOver() const { return m_gameBoard && m_gameBoard->IsGameOver(); }
+        void RestartGameClock();
+
+        int GetNumberOfSeedsCollected();
+        int GetNumberOfLeafsCollected();
+
+        void AddAnotherSeedCollected();
+        void AddAnotherLeafCollected();
+
+        void Use2SeedsToMakeLeaf();
+        void Use2LeafsToMakeHeart();
 
     private:
         GameEngineMain();
@@ -70,5 +80,7 @@ namespace GameEngine
         float				m_lastDT;
 
         bool m_windowInitialised;
+        int m_numberOfSeedsCollected;
+        int m_numberOfLeafsCollected;
     };
 }

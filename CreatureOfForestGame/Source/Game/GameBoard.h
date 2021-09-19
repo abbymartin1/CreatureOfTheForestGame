@@ -17,6 +17,10 @@ namespace Game
 
 		void Update();		
 		bool IsGameOver() { return false; }
+		bool m_isGameOver;
+		void SpawnRandomLeafBlock();
+		void SpawnRandomHeartBlock();
+
 	private:
 		void CreatePlayer();
 		void CreateKillerPlant();
@@ -26,8 +30,7 @@ namespace Game
 		void CreateRandomLeafBlocks(const sf::Vector2f& pos);
 		void CreateRandomHearts(const sf::Vector2f& pos);
 		void SpawnRandomSeedBlock();
-		void SpawnRandomLeafBlock();
-		void SpawnRandomHeartBlock();
+		void GameOver();
 
 		GameEngine::Entity* m_player;
 		GameEngine::Entity* m_killerPlant;
@@ -37,7 +40,7 @@ namespace Game
 		{
 			return ((b - a) * ((float)rand() / RAND_MAX)) + a;
 		}
-
+		float m_resourceTimer;
 		float m_lastObstacleSpawnTimer;
 	};
 }

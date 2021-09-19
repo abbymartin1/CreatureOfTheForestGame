@@ -1,4 +1,5 @@
 #include "CollidablePhysicsComponent.h"
+#include "GameEngine/GameEngineMain.h"
 
 #include "GameEngine/Util/CollisionManager.h"
 #include "GameEngine/EntitySystem/Entity.h"
@@ -97,22 +98,22 @@ void CollidablePhysicsComponent::DidCollideWithEntity(CollidableComponent* colli
 
 	if (m_numOfSeedsInCollision > 0)
 	{
-		// destroy
-		//collidable->GetEntity()->SetLocalPosOffset(sf::Vector2f(1000.f, 1000.f));
-		collidable->GetEntity()->SetSize(sf::Vector2f(50.f, 50.f));
-		// destroy the seeds 
-		//spawn new leaf
+		GameEngine::GameEngineMain::GetInstance()->GameEngineMain::AddAnotherSeedCollected();
+		// "destroy" the seeds 
+		collidable->GetEntity()->SetPos(sf::Vector2f(1000.f, 1000.f));
 	}
 	if (m_numOfLeavesInCollision > 0)
 	{
-		delete collidable->GetEntity();
-		// destroy the leaves 
-		// spawn new heart
+		GameEngine::GameEngineMain::GetInstance()->GameEngineMain::AddAnotherLeafCollected();
+		// "destroy" the leaf
+		collidable->GetEntity()->SetPos(sf::Vector2f(1000.f, 1000.f));
 	}
 	if (m_numOfHeartsInCollision > 0)
 	{
-		delete collidable->GetEntity();
-		// destroy the heart
-		// remove some time from the global timer
+		// "destroy" the heart
+		collidable->GetEntity()->SetPos(sf::Vector2f(1000.f, 1000.f));
+		
+		// Restart the count down (back to 60 sec)
+		GameEngine::GameEngineMain::GetInstance()->GameEngineMain::RestartGameClock();
 	}
 }
