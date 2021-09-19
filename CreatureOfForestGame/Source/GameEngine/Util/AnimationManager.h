@@ -13,6 +13,7 @@ namespace GameEngine
 		{
 			MonkeyMoveLeft,
 			MonkeyPickUpObject,
+			KillerPlantMove,
 			None,
 		};
 	}
