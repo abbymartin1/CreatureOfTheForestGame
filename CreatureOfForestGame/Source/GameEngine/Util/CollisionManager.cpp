@@ -15,12 +15,10 @@ CollisionManager::CollisionManager()
 
 }
 
-
 CollisionManager::~CollisionManager()
 {
 
 }
-
 
 void CollisionManager::RegisterCollidable(CollidableComponent* collidable)
 {
@@ -31,7 +29,6 @@ void CollisionManager::RegisterCollidable(CollidableComponent* collidable)
 		m_collidables.push_back(collidable);
 	}
 }
-
 
 void CollisionManager::UnRegisterCollidable(CollidableComponent* collidable)
 {

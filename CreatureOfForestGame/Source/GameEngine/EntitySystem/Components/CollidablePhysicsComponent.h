@@ -14,6 +14,12 @@ namespace GameEngine
 		virtual void OnRemoveFromWorld() override;
 
 		virtual void Update() override;
+	
+	private:
+		virtual void DidCollideWithEntity(CollidableComponent* collidables);
+		int m_numOfSeedsInCollision;
+		int m_numOfLeavesInCollision;
+		int m_numOfHeartsInCollision;
 	};
 }
 

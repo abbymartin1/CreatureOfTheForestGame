@@ -8,26 +8,25 @@ using namespace GameEngine;
 CollidableComponent::CollidableComponent()
 	: m_useDefaultBox(true)
 	, m_AABBBox()
+	, m_collisionTag(" ")
 {
-
+	
 }
-
 
 CollidableComponent::~CollidableComponent()
 {
 
 }
 
-
 void CollidableComponent::OnAddToWorld()
 {
 	Component::OnAddToWorld();
 	CollisionManager::GetInstance()->RegisterCollidable(this);
+	m_collisionTag = GetEntity()->GetEntityTag();
 
 	if (m_useDefaultBox)
 		SetupDefaultBoundingBox();
 }
-
 
 void CollidableComponent::OnRemoveFromWorld()
 {
@@ -42,7 +41,6 @@ void CollidableComponent::SetupDefaultBoundingBox()
 	//Static AABB for the time being		
 	SetBoundingBox(GetEntity()->GetSize());
 }
-
 
 void CollidableComponent::SetBoundingBox(sf::Vector2f size)
 {

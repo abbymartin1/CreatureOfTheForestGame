@@ -21,10 +21,20 @@ void AnimationManager::InitStaticGameAnimations()
 	m_animDefinitions.push_back
 	(
 		SAnimationDefinition(
-			EAnimationId::MonkeyMoveLeft,
+			EAnimationId::MonkeyMoveRight,
 			eTexture::Player,
 			sf::Vector2i(0, 0),
 			4,
+			3)
+	);
+
+	m_animDefinitions.push_back
+	(
+		SAnimationDefinition(
+			EAnimationId::MonkeyMoveLeft,
+			eTexture::Player,
+			sf::Vector2i(5, 0),
+			3,
 			3)
 	);
 

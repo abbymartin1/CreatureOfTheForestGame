@@ -22,8 +22,23 @@ namespace Game
 		void CreateKillerPlant();
 		void CreateBackground();
 		void CreatePlatforms();
+		void CreateRandomSeedBlocks(const sf::Vector2f& pos);
+		void CreateRandomLeafBlocks(const sf::Vector2f& pos);
+		void CreateRandomHearts(const sf::Vector2f& pos);
+		void SpawnRandomSeedBlock();
+		void SpawnRandomLeafBlock();
+		void SpawnRandomHeartBlock();
+
 		GameEngine::Entity* m_player;
 		GameEngine::Entity* m_killerPlant;
+	
+	protected:
+		float RandomFloatRange(float a, float b)
+		{
+			return ((b - a) * ((float)rand() / RAND_MAX)) + a;
+		}
+
+		float m_lastObstacleSpawnTimer;
 	};
 }
 

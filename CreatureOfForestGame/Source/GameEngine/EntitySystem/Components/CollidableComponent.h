@@ -3,9 +3,11 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <string>
 
 namespace GameEngine
 {
+	//enum TypeOfCollidable { seed, leaf, heart, player, unknown };
 	typedef sf::Rect<float> AABBRect;
 
 	class CollidableComponent : public Component
@@ -27,6 +29,7 @@ namespace GameEngine
 		
 		bool	 m_useDefaultBox;
 		AABBRect m_AABBBox;
+		std::string m_collisionTag;
 	};
 }
 

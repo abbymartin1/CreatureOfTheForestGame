@@ -87,9 +87,9 @@ namespace GameEngine
             return newComponent;
         }
 
-    protected:
         void DestroyComponents();
-
+        
+    protected:
         std::vector<Component*> m_components;
         sf::Vector2f		   m_pos;
         sf::Vector2f		   m_size;

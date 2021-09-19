@@ -49,16 +49,16 @@ namespace TextureHelper
     {
         switch (texture)
         {
-        	case  GameEngine::eTexture::Player:  return sf::Vector2f(710.f, 628.f);
-			case  GameEngine::eTexture::BG:	     return sf::Vector2f(500.f, 500.f);
-			case GameEngine::eTexture::KillerPlant: return sf::Vector2f(1200.f, 1200.f);
-			case  GameEngine::eTexture::Platform:  return sf::Vector2f(81.f, 30.f);
-			case  GameEngine::eTexture::JunglePlatform:  return sf::Vector2f(75.f, 24.f);
-			case  GameEngine::eTexture::JunglePlatform2:  return sf::Vector2f(75.f, 21.f);
-			case  GameEngine::eTexture::Seed:	     return sf::Vector2f(1200.f, 1200.f);
-			case GameEngine::eTexture::Leaf: return sf::Vector2f(500.f, 500.f);
-			case  GameEngine::eTexture::Heart:  return sf::Vector2f(1200.f, 1200.f);
-			default: return sf::Vector2f(-1.f, -1.f);
+        	case  GameEngine::eTexture::Player:  			return sf::Vector2f(710.f, 628.f);
+			case  GameEngine::eTexture::BG:	     			return sf::Vector2f(500.f, 500.f);
+			case GameEngine::eTexture::KillerPlant: 		return sf::Vector2f(1080.f, 1080.f);
+			case  GameEngine::eTexture::Platform:  			return sf::Vector2f(81.f, 30.f);
+			case  GameEngine::eTexture::JunglePlatform:  	return sf::Vector2f(75.f, 24.f);
+			case  GameEngine::eTexture::JunglePlatform2:  	return sf::Vector2f(75.f, 21.f);
+			case  GameEngine::eTexture::Seed:	     		return sf::Vector2f(209.f, 209.f);
+			case GameEngine::eTexture::Leaf: 				return sf::Vector2f(397.f, 397.f);
+			case  GameEngine::eTexture::Heart:  			return sf::Vector2f(1020.f, 886.f);
+			default: 										return sf::Vector2f(-1.f, -1.f);
         }
     }
 }
