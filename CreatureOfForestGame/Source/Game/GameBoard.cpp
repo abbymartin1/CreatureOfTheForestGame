@@ -6,6 +6,7 @@
 #include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
 #include "GameEngine/EntitySystem/Components/AnimationComponent.h"
 #include "GameEngine/EntitySystem/Components/CollidablePhysicsComponent.h"
+#include "GameEngine/EntitySystem/Components/PawnPhysicsComponent.h"
 #include "Game/GameComponents/PlayerCameraComponent.h"
 
 using namespace Game;
@@ -15,7 +16,7 @@ GameBoard::GameBoard()
 	, m_killerPlant(nullptr)
 {
 	CreatePlayer();
-	CreateKillerPlant();
+	//CreateKillerPlant();
 	CreateBackground();
 	CreatePlatforms();
 }
@@ -32,7 +33,7 @@ void GameBoard::CreatePlayer()
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(m_player);
 
 	m_player->SetPos(sf::Vector2f(50.f, 50.f));
-	m_player->SetSize(sf::Vector2f(130.f, 130.f));
+	m_player->SetSize(sf::Vector2f(71.f, 63.f));
 
 	// Render
 	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(m_player->AddComponent<GameEngine::SpriteRenderComponent>());
@@ -45,7 +46,7 @@ void GameBoard::CreatePlayer()
 	m_player->AddComponent<GameEngine::AnimationComponent>();
 
 	// Collision
-	m_player->AddComponent<GameEngine::CollidablePhysicsComponent>();
+	m_player->AddComponent<GameEngine::PawnPhysicsComponent>();
 
 	//m_player->AddComponent<PlayerCameraComponent>();
 }
@@ -55,7 +56,8 @@ void GameBoard::CreateKillerPlant()
 	m_killerPlant = new GameEngine::Entity();
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(m_killerPlant);
 
-	m_killerPlant->SetPos(sf::Vector2f(400.f, 50.f));
+	//120.f, 280.f
+	m_killerPlant->SetPos(sf::Vector2f(120.f, 300.f));
 	m_killerPlant->SetSize(sf::Vector2f(100.f, 100.f));
 
 	// Render
@@ -97,15 +99,15 @@ void GameBoard::CreatePlatforms()
 	GameEngine::Entity* platform1 = new GameEngine::Entity();
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(platform1);
 	platform1->SetPos(sf::Vector2f(100.f, 100.f));
-	platform1->SetSize(sf::Vector2f(286.f, 50.f));
+	platform1->SetSize(sf::Vector2f(225.f, 72.f));
 	// Render - Platform 1
-	GameEngine::SpriteRenderComponent* render = static_cast<GameEngine::SpriteRenderComponent*>(platform1->AddComponent<GameEngine::SpriteRenderComponent>());
-	render->SetFillColor(sf::Color::Transparent);
-	render->SetTexture(GameEngine::eTexture::Platform);
+	GameEngine::SpriteRenderComponent* render1 = static_cast<GameEngine::SpriteRenderComponent*>(platform1->AddComponent<GameEngine::SpriteRenderComponent>());
+	render1->SetFillColor(sf::Color::Transparent);
+	render1->SetTexture(GameEngine::eTexture::JunglePlatform);
 	// Collision - Platform 1
 	platform1->AddComponent<GameEngine::CollidablePhysicsComponent>();
 
-	// Platform 2 
+  	// Platform 2 
 	GameEngine::Entity* platform2 = new GameEngine::Entity();
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(platform2);
 	platform2->SetPos(sf::Vector2f(400.f, 400.f));
@@ -120,14 +122,39 @@ void GameBoard::CreatePlatforms()
 	// Platform 3
 	GameEngine::Entity* platform3 = new GameEngine::Entity();
 	GameEngine::GameEngineMain::GetInstance()->AddEntity(platform3);
-	platform3->SetPos(sf::Vector2f(80.f, 350.f));
-	platform3->SetSize(sf::Vector2f(225.f, 63.f));
+	platform3->SetPos(sf::Vector2f(120.f, 240.f));
+	platform3->SetSize(sf::Vector2f(250.f, 63.f));
 	// Render - Platform 3
 	GameEngine::SpriteRenderComponent* render3 = static_cast<GameEngine::SpriteRenderComponent*>(platform3->AddComponent<GameEngine::SpriteRenderComponent>());
 	render3->SetFillColor(sf::Color::Transparent);
-	render3->SetTexture(GameEngine::eTexture::JunglePlatform);
+	render3->SetTexture(GameEngine::eTexture::JunglePlatform2);
 	// Collision - Platform 3
 	platform3->AddComponent<GameEngine::CollidablePhysicsComponent>();
+
+	// Platform 4
+	GameEngine::Entity* platform4 = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(platform4);
+	platform4->SetPos(sf::Vector2f(500.f, 200.f));
+	platform4->SetSize(sf::Vector2f(225.f, 63.f));
+	// Render - Platform 4
+	GameEngine::SpriteRenderComponent* render4 = static_cast<GameEngine::SpriteRenderComponent*>(platform4->AddComponent<GameEngine::SpriteRenderComponent>());
+	render4->SetFillColor(sf::Color::Transparent);
+	render4->SetTexture(GameEngine::eTexture::JunglePlatform2);
+	// Collision - Platform 4
+	platform4->AddComponent<GameEngine::CollidablePhysicsComponent>();
+
+
+	// Platform 5 
+	GameEngine::Entity* platform5 = new GameEngine::Entity();
+	GameEngine::GameEngineMain::GetInstance()->AddEntity(platform5);
+	platform5->SetPos(sf::Vector2f(0.f, 450.f));
+	platform5->SetSize(sf::Vector2f(225.f, 63.f));
+	// Render - Platform 5
+	GameEngine::SpriteRenderComponent* render5 = static_cast<GameEngine::SpriteRenderComponent*>(platform5->AddComponent<GameEngine::SpriteRenderComponent>());
+	render5->SetFillColor(sf::Color::Transparent);
+	render5->SetTexture(GameEngine::eTexture::JunglePlatform2);
+	// Collision - Platform 5
+	platform5->AddComponent<GameEngine::CollidablePhysicsComponent>();
 }
 
 void GameBoard::Update()
