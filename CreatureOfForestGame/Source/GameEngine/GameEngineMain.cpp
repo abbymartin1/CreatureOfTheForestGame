@@ -25,6 +25,8 @@ GameEngineMain::GameEngineMain()
     : m_renderTarget(nullptr)
     , m_gameBoard(nullptr)
     , m_windowInitialised(false)
+	, m_numberOfSeedsCollected(0)
+	, m_numberOfLeafsCollected(0)
 {
     CreateAndSetUpWindow();
     //Load predefined textures
@@ -51,6 +53,52 @@ void GameEngineMain::OnInitialised()
     sm_gameClock.restart();
 }
 
+void GameEngineMain::RestartGameClock()
+{
+	sm_deltaTimeClock.restart();
+	sm_gameClock.restart();
+}
+
+
+int GameEngineMain::GetNumberOfSeedsCollected()
+{
+	return m_numberOfSeedsCollected;
+}
+
+int GameEngineMain::GetNumberOfLeafsCollected()
+{
+	return m_numberOfLeafsCollected;
+}
+
+void GameEngineMain::AddAnotherSeedCollected()
+{
+	m_numberOfSeedsCollected++;
+}
+
+void GameEngineMain::AddAnotherLeafCollected()
+{
+	m_numberOfLeafsCollected++;
+}
+
+void GameEngineMain::Use2SeedsToMakeLeaf()
+{
+	if (m_numberOfSeedsCollected > 1)
+	{
+		m_numberOfSeedsCollected = m_numberOfSeedsCollected - 2;
+		// trigger a leaf now
+		m_gameBoard->SpawnRandomLeafBlock();
+	}
+}
+
+void GameEngineMain::Use2LeafsToMakeHeart()
+{
+	if (m_numberOfLeafsCollected > 1)
+	{
+		m_numberOfLeafsCollected = m_numberOfLeafsCollected - 2;
+		// trigger a heart now
+		m_gameBoard->SpawnRandomHeartBlock();
+	}
+}
 
 void GameEngineMain::CreateAndSetUpWindow()
 {
@@ -151,6 +199,12 @@ std::vector<Entity*> GameEngineMain::GetEntitiesByTag(std::string tag)
 
 void GameEngineMain::Update()
 {
+
+	if (sm_gameClock.getElapsedTime().asSeconds() > 60)
+	{
+		// if more than a minute end game.
+		m_gameBoard->m_isGameOver = true;
+	}
     //First update will happen after init for the time being (we will add loading later)
     if (!m_windowInitialised)
     {

@@ -51,6 +51,7 @@ namespace TextureHelper
         {
         	case  GameEngine::eTexture::Player:  			return sf::Vector2f(710.f, 628.f);
 			case  GameEngine::eTexture::BG:	     			return sf::Vector2f(500.f, 500.f);
+			case  GameEngine::eTexture::BGGameOver:	     	return sf::Vector2f(500.f, 500.f);
 			case GameEngine::eTexture::KillerPlant: 		return sf::Vector2f(1080.f, 1080.f);
 			case  GameEngine::eTexture::Platform:  			return sf::Vector2f(81.f, 30.f);
 			case  GameEngine::eTexture::JunglePlatform:  	return sf::Vector2f(75.f, 24.f);
